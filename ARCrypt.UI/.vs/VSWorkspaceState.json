@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.angular",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\encrypt",
+    "\\src\\app\\key-size"
+  ],
+  "SelectedNode": "\\src\\app\\key-size\\key-size.component.ts",
+  "PreviewInSolutionExplorer": false
+}

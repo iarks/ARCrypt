@@ -1,0 +1,38 @@
+<!-- Cipher Mode -->
+<mat-label>Cipher Mode:</mat-label>
+<section>
+  <mat-button-toggle-group [formControl]="cipherModeControl" aria-label="Cipher Mode">
+    <mat-button-toggle value={{CipherMode.CBC}}>CBC</mat-button-toggle>
+  </mat-button-toggle-group>
+</section>
+
+<!--
+<section>
+  <mat-label>{{cipherModeControl.value}}</mat-label>
+</section>
+-->
+<!-- Initialization Vector -->
+<section>
+  <mat-form-field appearance="outline">
+    <mat-label>Initialization Vector (Optional)</mat-label>
+    <mat-icon matPrefix matTooltip="The initilization vector to use. Recommended, but not required. If no iv is provided, empty will be used.">shuffle</mat-icon>
+    <input matInput [formControl]="ivControl" placeholder="Initialization Vector" />
+    <button mat-icon-button
+            matSuffix
+            (click)="generateIv()"
+            matTooltip="'Info about the action'"
+            matTooltipHideDelay="100000"
+            [attr.aria-label]="'Toggle password visibility'">
+      <mat-icon matTooltip ="Generate random initialization vector. Note this down because this will be required for decrypting the data later">refresh</mat-icon>
+    </button>
+    <button mat-icon-button matSuffix (click)="copy(ivControl)"
+            [attr.aria-label]="'Toggle password visibility'">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+    <mat-error>{{ivControl.getError('invalidLength')}}</mat-error>
+  </mat-form-field>
+</section>
+
+
+
+<!-- {{ivControl.value}} -->

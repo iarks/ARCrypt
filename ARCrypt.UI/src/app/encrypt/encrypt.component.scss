@@ -1,0 +1,7 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Spacing between each section */
+  max-width: 600px; /* Set a max-width for the form */
+  margin: 0 auto; /* Center the form horizontally */
+}

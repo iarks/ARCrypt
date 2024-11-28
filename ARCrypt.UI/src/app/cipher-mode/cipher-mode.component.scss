@@ -1,0 +1,16 @@
+mat-form-field {
+    width: 100%
+}
+
+mat-button-toggle-group {
+  width: 100%;
+
+  mat-button-toggle {
+    width: 100%
+  }
+}
+
+/* Add spacing between sections */
+section {
+  margin-bottom: 16px; /* Adds space below each section */
+}

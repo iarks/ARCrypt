@@ -1,0 +1,9 @@
+<!-- Key Size -->
+<mat-label>AES Mode: </mat-label>
+<section>
+  <mat-button-toggle-group [formControl]="keySizeControl" aria-label="Font Style">
+    <mat-button-toggle [value]=128>128</mat-button-toggle>
+    <mat-button-toggle [value]=192>192</mat-button-toggle>
+    <mat-button-toggle [value]=256>256</mat-button-toggle>
+  </mat-button-toggle-group>
+</section>

@@ -1,0 +1,24 @@
+mat-button-toggle-group {
+    width: 100%
+}
+
+/* Ensure the container takes full width and is a flex container */
+section {
+  display: flex;
+  justify-content: space-between; /* Evenly distribute buttons */
+  align-items: center; /* Vertically center the items */
+  width: 100%; /* Take up 100% of the width */
+}
+
+/* Style the mat-button-toggle-group to fill the available width */
+mat-button-toggle-group {
+  display: flex;
+  justify-content: space-between; /* Evenly space the buttons inside the group */
+  width: 100%; /* Make sure it spans the entire container width */
+}
+
+/* Optional: You can also adjust the size of the buttons for better appearance */
+mat-button-toggle {
+  flex: 1; /* Allow buttons to grow and take up equal space */
+  text-align: center; /* Center the button text */
+}

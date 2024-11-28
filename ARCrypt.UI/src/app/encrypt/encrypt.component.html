@@ -1,0 +1,27 @@
+
+<div class="mat-typography">
+  <h1>Encrypt</h1>
+
+  <form [formGroup]="encryptForm">
+
+    <app-copytext-area [label]='"Encrypted Text"' [icon]='"lock_open"' [clipboard]="clipboard"></app-copytext-area>
+
+    <app-secret-key (onSecretKeyControlBind)="onSecretKeyControlBind($event)" [clipboard]="clipboard"></app-secret-key>
+
+    <app-cipher-mode (onInitVectorControlBind)="onInitVectorControlBind($event)" (onCipherModeControlBind)="onCipherModeControlBind($event)" [clipboard]="clipboard"></app-cipher-mode>
+
+    <app-key-size (controlEmitter)="onKeySizeControlBind($event)"></app-key-size>
+
+
+    <app-format (onFormControlBind)="onOutputFormatBind($event)"></app-format>
+
+    <!-- Encrypt Button -->
+    <section>
+      <button style="width: 100%;" mat-raised-button color="primary" (click)="encryptText()">Encrypt</button>
+    </section>
+
+    <app-copytext-area readonly [icon]='"lock"' [label]='"Encrypted Text"' [clipboard]="clipboard"></app-copytext-area>
+
+  </form>
+
+</div>

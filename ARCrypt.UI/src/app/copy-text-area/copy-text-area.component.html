@@ -1,0 +1,13 @@
+<section>
+  <mat-form-field appearance="outline">
+    <mat-label>{{label}}</mat-label>
+    <mat-icon matPrefix>{{icon}}</mat-icon>
+    <textarea matInput rows="4" cols="50" [formControl]="control"></textarea>
+    <mat-error *ngIf="touched && errors">{{getallErrors()}}</mat-error>
+    <button mat-icon-button
+            matSuffix
+            (click)="copy()">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  </mat-form-field>
+</section>
