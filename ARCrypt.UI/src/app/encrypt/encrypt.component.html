@@ -1,0 +1,28 @@
+
+<div class="mat-typography" style="padding:16px">
+  <!--<h2 style="text-align:center">Encrypt</h2>-->
+
+  <form [formGroup]="encryptForm">
+
+    <app-copytext-area [label]='"Plaintext"' [icon]='"lock_open"' formControlName="plainText"></app-copytext-area>
+
+    <app-secret-key formControlName="secretKey"></app-secret-key>
+
+    <app-format formControlName="outputFormat"></app-format>
+
+    <!-- Encrypt Button -->
+    <section style="display:flex;">
+      <div style="width:100%; padding-right:8px">
+        <button type="submit" style="width: 100%; border-radius: 12px" mat-flat-button (click)="encryptText()">Encrypt</button>
+      </div>
+
+      <div style="width:100%; padding-left:8px">
+        <button type="button" (click)="reset($event)" style="width: 100%; border-radius: 12px" mat-flat-button>Reset</button>
+      </div>
+    </section>
+
+
+    <app-copytext-area [readonly]='true' [icon]='"lock"' [label]='"Ciphertext (readonly)"' formControlName="encryptedText"></app-copytext-area>
+  </form>
+
+</div>

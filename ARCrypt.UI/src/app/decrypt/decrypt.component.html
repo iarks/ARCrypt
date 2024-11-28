@@ -1,0 +1,22 @@
+
+<div class="mat-typography" style="padding:16px">
+  
+
+  <form [formGroup]="decryptForm">
+
+    <app-copytext-area formControlName="cipherText" [label]='"Ciphertext"' [icon]='"lock"'></app-copytext-area>
+
+    <app-format formControlName="cipherTextFormat"></app-format>
+
+    <app-secret-key formControlName="secret"></app-secret-key>
+
+    <section>
+      <button style="width: 100%; border-radius:12px" mat-flat-button (click)="decryptText()">Decrypt</button>
+    </section>
+
+    <app-copytext-area formControlName="plainText" [readonly]='true' [icon]='"lock_open"' [label]='"Plaintext (readonly)"'></app-copytext-area>
+
+  </form>
+
+</div>
+

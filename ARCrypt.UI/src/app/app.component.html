@@ -1,0 +1,57 @@
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <p>Auto-resizing sidenav</p>
+    <!-- -->
+    <!-- put sidebar content here -->
+    <!-- -->
+  </mat-drawer>
+
+  <!--  -->
+
+
+
+  <mat-toolbar>
+    <button mat-icon-button class="example-icon" (click)="drawer.toggle()" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span>
+      <mat-chip-set aria-label="title">
+        <mat-chip disableRipple='true'>{{title}}</mat-chip>
+      </mat-chip-set>
+    </span>
+
+    <span style="width:100%" class="example-spacer"></span>
+
+    <span>
+      <mat-chip-set aria-label="title">
+        <mat-chip disableRipple='true'>v{{version}}</mat-chip>
+      </mat-chip-set>
+    </span>
+
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>settings</mat-icon>
+    </button>
+
+  </mat-toolbar>
+
+  <div style="padding:24px">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+      <mat-tab label="Encrypt">
+        <app-encrypt></app-encrypt>
+      </mat-tab>
+
+      <mat-tab label="Decrypt">
+
+        <app-decrypt></app-decrypt>
+
+      </mat-tab>
+    </mat-tab-group>
+
+  </div>
+
+
+  
+  <!-- main page content  -->
+
+</mat-drawer-container>

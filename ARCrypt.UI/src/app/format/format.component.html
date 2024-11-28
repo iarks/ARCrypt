@@ -1,0 +1,8 @@
+ <!-- Output Format -->
+<section  class="inline-container">
+    <label>{{label}}</label>
+    <mat-button-toggle-group style="border-radius:12px" #buttonGroup aria-label="Format" (change)="onValueChange()" [formControl]="formControl">
+        <mat-button-toggle value="{{Format.BASE_64}}">Base64</mat-button-toggle>
+        <mat-button-toggle value="{{Format.HEX}}">Hex</mat-button-toggle>
+    </mat-button-toggle-group>
+</section>
