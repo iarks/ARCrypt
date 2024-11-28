@@ -1,0 +1,21 @@
+mat-form-field {
+  width: 100%
+}
+
+mat-button-toggle-group {
+  width: 100%;
+
+  mat-button-toggle {
+    width: 100%
+  }
+}
+
+section {
+  display: flex;
+  align-items: center; /* Vertically aligns the label and toggle group */
+}
+
+label {
+  margin-right: 16px; /* Adds spacing between the label and the toggle group */
+  white-space: nowrap; /* Prevents the label text from wrapping */
+}

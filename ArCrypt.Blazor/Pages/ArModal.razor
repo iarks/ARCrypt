@@ -1,0 +1,91 @@
+@page "/modal"
+@using ArCrypt.Blazor.Model;
+@inject IJSRuntime _runtime
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if (!string.IsNullOrEmpty(@ModalContent.Icon))
+                {
+                    <span class="mr-auto p-2"><img src=@("./css/feathericons/"+ModalContent.Icon+".svg") alt="Unlock Icon" /></span>
+                }
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">@ModalContent.Title</h1>
+            </div>
+            <div class="modal-body">
+
+                <div style="width:100%">
+                    <div class="card">
+                        <div class="card-body">
+                            @ModalContent.Content
+                        </div>
+                        <div class="card-footer">
+
+                            <div class="d-flex">
+                                <button class="btn btn-outline-secondary p-2 me-3" type="button" @onclick="CopyAsync"><img src="./css/feathericons/copy-dark.svg" alt="Alternate Text" /></button>
+                                <div class="text-warning-emphasis">
+                                    @ModalContent.Warning
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" disabled="@(!IsConfirmClicked)">Close</button>
+                <button type="button" class="btn btn-primary" @onclick="Confirm">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@* @if (ShowBackdrop) *@
+@* { *@
+@*     <div class="modal-backdrop fade show"></div> *@
+@* } *@
+
+
+@code {
+
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+    private ElementReference modalId { get; set; }
+    private ModalContent ModalContent { get; set; } = new ModalContent(string.Empty, string.Empty, null);
+    private bool IsConfirmClicked = false;
+    public async Task Open(ModalContent modalContent)
+    {
+        IsConfirmClicked = false;
+        ModalContent = modalContent;
+        StateHasChanged();
+        await _runtime.InvokeVoidAsync("_site.showModal", "staticBackdrop", "show");
+        //await _runtime.InvokeVoidAsync("_site.addStyle", "modalId", "display:block;");
+        /*
+        ModalDisplay = "block;";
+        ModalClass = "show";
+
+        ShowBackdrop = true;
+
+        await Task.Delay(2500);//Delay allows bootstrap to perform nice fade animation
+        StateHasChanged();
+        */
+
+    }
+
+    private void Confirm() {
+        IsConfirmClicked = true;
+        StateHasChanged();
+    }
+
+    private async Task CopyAsync()
+    {
+        await _runtime.InvokeVoidAsync("copyToClipboard", ModalContent.Content);
+    }
+}

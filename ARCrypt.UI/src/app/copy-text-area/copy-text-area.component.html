@@ -1,0 +1,36 @@
+<mat-card appearance="outlined">
+  <mat-card-content>
+    <mat-form-field appearance="outline">
+      <mat-label>{{label}}</mat-label>
+      <textarea
+                style="width:100%"
+                #textArea
+                [formControl]="control"
+                matInput
+                rows="4"
+                cols="5000"
+                class="form-control"></textarea>
+      <mat-error *ngIf="control.hasError('required')">Required</mat-error>
+
+    </mat-form-field>
+
+  </mat-card-content>
+  <mat-card-actions align="end">
+
+    <div style="width:100%; display:flex; padding: 8px">
+
+      <mat-icon>{{icon}}</mat-icon>
+
+    </div>
+
+    <button type="button" mat-icon-button (click)="copy($event)">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="paste($event)">
+      <mat-icon>content_paste</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="clear($event)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

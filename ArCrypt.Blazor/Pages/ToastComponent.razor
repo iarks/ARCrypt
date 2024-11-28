@@ -1,0 +1,56 @@
+@inject IToastService ToastService
+
+
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:10000">
+    @foreach (var toast in Toasts)
+    {
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">@toast.Title</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @onclick="() => RemoveToast(toast)"></button>
+            </div>
+            <div class="toast-body">
+                @toast.Message
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@code {
+    private List<Toast> Toasts = new();
+
+    protected override void OnInitialized()
+    {
+        ToastService.OnShowToast += AddToast;
+    }
+
+    private async Task AddToast(string title, string message, int delay)
+    {
+        var toast = new Toast { Title = title, Message = message };
+        Toasts.Add(toast);
+        StateHasChanged();
+        await Task.Delay(delay);
+        Toasts.Remove(toast);
+        StateHasChanged();
+    }
+
+    private void RemoveToast(Toast toast)
+    {
+        Toasts.Remove(toast);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        ToastService.OnShowToast -= AddToast;
+    }
+
+    private class Toast
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+    }
+}

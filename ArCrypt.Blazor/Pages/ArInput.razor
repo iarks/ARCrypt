@@ -1,0 +1,49 @@
+@inherits Microsoft.AspNetCore.Components.Forms.InputText
+
+@inject IJSRuntime _jsRuntime
+
+<div style="width:100%">
+    <div class="card">
+        <div class="card-body">
+            <div class="form-floating flex-grow-1">
+                <textarea @attributes="@AdditionalAttributes" style="height:100px; min-height:100px" class="form-control" placeholder="Plaintext" id="input" @bind="@CurrentValueAsString" />
+                <label for="input">@Label</label>
+            </div>
+        </div>
+        <div class="card-footer">
+
+            <div class="d-flex">
+                <span class="mr-auto p-2"><img src=@("./css/feathericons/"+Icon+".svg") alt="Unlock Icon" /></span>
+                <button class=@("btn btn-outline-secondary p-2"+ (!DisableClear ? " me-3" : null)) type="button" @onclick="CopyAsync"><img src="./css/feathericons/copy-dark.svg" alt="Alternate Text" /></button>
+                @if (!DisableClear)
+                {
+                    <button class="btn btn-danger p-2" type="button" @onclick="Clear">
+                        <img src="./css/feathericons/x.svg" alt="Clear" />
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@code {
+
+    [Parameter] public bool DisableClear { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? Icon { get; set; }
+
+    private void Clear()
+    {
+        CurrentValueAsString = "";
+    }
+
+    private async Task CopyAsync()
+    {
+        await _jsRuntime.InvokeVoidAsync("copyToClipboard", CurrentValueAsString);
+    }
+}
