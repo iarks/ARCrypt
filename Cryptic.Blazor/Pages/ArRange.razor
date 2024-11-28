@@ -1,0 +1,50 @@
+@using Cryptic.Blazor.Services
+@using Cryptic.Blazor.Model
+
+
+<div style="width:100%">
+
+    <div class="card mb-3">
+
+        <div class="card-header">
+            <label for="@Id" class="form-label mb-0">@Title</label>
+        </div>
+
+        <div class="card-body">
+            <select class="form-select" aria-label="Default select example" id="@Id" @bind="SelectValue">
+                <option value=@(MemoryLimits.INTERACTIVE)>@(MemoryLimits.INTERACTIVE)</option>
+                <option value=@(MemoryLimits.MODERATE)>@(MemoryLimits.MODERATE)</option>
+                <option value=@(MemoryLimits.SENSITIVE)>@(MemoryLimits.SENSITIVE)</option>
+            </select>
+        </div>
+
+        
+    </div>
+</div>
+
+
+
+
+@code{
+    private Guid Id = Guid.NewGuid();
+
+    [Parameter] public string Title { get; set; } = null!;
+   
+    [Parameter] public MemoryLimits SelectValue
+    {
+        get => _currentSelectValue;
+        set
+        {
+            if (_currentSelectValue == value) return;
+
+            
+            _currentSelectValue = value;
+            SelectValueChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<MemoryLimits> SelectValueChanged { get; set; }
+
+    private MemoryLimits _currentSelectValue = MemoryLimits.INTERACTIVE;
+}

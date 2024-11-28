@@ -1,0 +1,113 @@
+﻿@page "/decrypt"
+@inject ICryptoService _cryptoService
+@inject DecryptionFormValidator _validator;
+@using System
+@using System.Text
+@using System.ComponentModel.DataAnnotations
+@using Cryptic.Blazor.Model
+@using Cryptic.Blazor.Model.Validation
+
+<ArModal @ref="Modal" />
+<EditForm EditContext="@_editContext" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3" style="width:100%">
+        <ArInput @bind-Value="@_decryptForm.Ciphertext" Icon="lock-dark" Label="Ciphertext" Placeholder="Ciphertext">
+            <ChildContent>
+                <ValidationMessage class="validation-floating" For=@(() => _decryptForm.Ciphertext)></ValidationMessage>
+            </ChildContent>
+            <IconComponent>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </IconComponent>
+        </ArInput>
+    </div>
+
+
+    <div class="mb-3" style="width:100%">
+        <ArPassword @bind-Value="@_decryptForm.Password" Icon="key-dark" Label="Password" Placeholder="Password" DisableGenerate="@true">
+            <ValidationMessage class="validation-floating" For=@(() => _decryptForm.Password)></ValidationMessage>
+        </ArPassword>
+    </div>
+
+
+
+    <div class="mb-3">
+        @if (isLoading)
+        {
+            <button class="btn btn-primary w-100" disabled>
+                <span class="spinner-border spinner-border-sm"></span>
+                <span>Loading...</span>
+            </button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-outline-primary w-100">Submit</button>
+        }
+        <button type="reset" class="btn btn-outline-danger w-100 mt-2" @onclick="ResetForm">Reset</button>
+    </div>
+
+</EditForm>
+
+@code {
+    private ArModal Modal { get; set; } = null!;
+    private bool isLoading = false;
+    private EncryptionForm _decryptForm = new();
+    private ValidationContext _validationContext = null!;
+    private ValidationMessageStore _validationMessageStore = null!;
+
+    private EditContext _editContext = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        InitializeEditContext();
+    }
+
+    private void InitializeEditContext()
+    {
+        _editContext = new EditContext(_decryptForm);
+        _validationMessageStore = new ValidationMessageStore(_editContext);
+        _editContext.OnValidationRequested += async (sender, args) => await ValidateModel();
+    }
+
+    private async Task ValidateModel()
+    {
+        var validationResult = await _validator.ValidateAsync(_decryptForm);
+        _validationMessageStore.Clear();
+
+        for (int i = 0; i < validationResult.Errors.Count; i++)
+        {
+            _validationMessageStore.Add(_editContext.Field(validationResult.Errors[i].PropertyName), validationResult.Errors[i].ErrorMessage);
+        }
+        var xx = _editContext.GetValidationMessages().ToList();
+        _editContext.NotifyValidationStateChanged();
+    }
+
+    private async Task HandleSubmit()
+    {
+        try
+        {
+            isLoading = true;
+            await Task.Delay(1);
+            var ciphertextBytes = Convert.FromBase64String(_decryptForm.Ciphertext);
+            var plaintextBytes = await _cryptoService.Decrypt(ciphertextBytes, _decryptForm.Password, null);
+            var plainText = Encoding.UTF8.GetString(plaintextBytes);
+            _decryptForm.Plaintext = plainText;
+            await Modal.Open(new ModalContent("Plaintext", _decryptForm.Plaintext, null) { Icon = "unlock" });
+            isLoading = false;
+        }
+        catch(Exception ex)
+        {
+            isLoading = false;
+            Console.WriteLine(ex);
+            await Modal.Open(new ModalContent("Error", "Please make sure the provided password is correct", "Unable to decrypt provided input") { InfotextStyle = InfotextType.ERROR, DisableCopy = true });
+        }
+    }
+
+    private void ResetForm()
+    {
+        _decryptForm = new EncryptionForm();
+        InitializeEditContext();
+        _validationMessageStore.Clear();
+        _editContext.NotifyValidationStateChanged();
+    }
+}

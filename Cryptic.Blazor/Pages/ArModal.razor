@@ -1,0 +1,89 @@
+@page "/modal"
+@using Cryptic.Blazor.Model;
+@inject IJSRuntime _runtime
+
+<div class="modal fade" id=@(_modalLabel) data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby=@(_modalLabel) aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if (!string.IsNullOrEmpty(@ModalContent.Icon))
+                {
+                    <span class="mr-auto p-2"><img src=@("./css/feathericons/"+ModalContent.Icon+".svg") alt="Unlock Icon" /></span>
+                }
+                <h1 class="modal-title fs-5" id=@(_modalLabel)>@ModalContent.Title</h1>
+            </div>
+            <div class="modal-body">
+
+                <div style="width:100%">
+                    <div class="card">
+
+                        <div class="card-header">
+                            <div class="d-flex">
+                                @if (!string.IsNullOrEmpty(ModalContent.Infotext))
+                                {
+                                    <div class=@(ModalContent.InfotextStyle == InfotextType.WARN ? "text-warning-emphasis": ModalContent.InfotextStyle == InfotextType.INFO ? "text-info-emphasis" : "text-danger-emphasis")>
+                                        @ModalContent.Infotext
+                                    </div>
+                                }
+
+                                @if(!ModalContent.DisableCopy)
+                                {
+                                    <button class="btn btn-outline-secondary p-2" type="button" @onclick="CopyAsync">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            @ModalContent.Content
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    public Guid _modalLabel = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+    private ElementReference modalId { get; set; }
+    private ModalContent ModalContent { get; set; } = new ModalContent(string.Empty, string.Empty, null);
+    private bool IsConfirmClicked = false;
+    public async Task Open(ModalContent modalContent)
+    {
+        IsConfirmClicked = false;
+        ModalContent = modalContent;
+        StateHasChanged();
+        await _runtime.InvokeVoidAsync("_site.showModal", _modalLabel.ToString(), "show");
+        //await _runtime.InvokeVoidAsync("_site.addStyle", "modalId", "display:block;");
+        /*
+        ModalDisplay = "block;";
+        ModalClass = "show";
+
+        ShowBackdrop = true;
+
+        await Task.Delay(2500);//Delay allows bootstrap to perform nice fade animation
+        StateHasChanged();
+        */
+
+    }
+
+    private void Confirm() {
+        IsConfirmClicked = true;
+        StateHasChanged();
+    }
+
+    private async Task CopyAsync()
+    {
+        await _runtime.InvokeVoidAsync("copyToClipboard", ModalContent.Content);
+    }
+}

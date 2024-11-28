@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.JSInterop" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cryptic.Blazor.Model\Cryptic.Blazor.Model.csproj" />
+    <ProjectReference Include="..\Cryptic.Blazor.Services.Abstractions\Cryptic.Blazor.Services.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
