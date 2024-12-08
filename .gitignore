@@ -4,6 +4,6 @@
 
 /.vs/*
 /ARCrypt.UI/obj/Debug
-/ArCrypt.Blazor.Services/obj/Debug
-/ArCrypt.Blazor/obj/Debug
-/ArCrypt.Blazor.Services.Abstractions/obj/Debug
+/ArCrypt.Blazor.Services/obj
+/ArCrypt.Blazor/obj
+/ArCrypt.Blazor.Services.Abstractions/obj
