@@ -8,3 +8,7 @@
 /ArCrypt.Blazor/obj
 /ArCrypt.Blazor.Services.Abstractions/obj
 /ArCrypt.Blazor/bin/Debug/net8.0
+/ArCrypt.Blazor.Model/bin/Debug/net8.0
+/ArCrypt.Blazor.Model/obj
+/ArCrypt.Blazor.Services/bin/Debug/net8.0
+/ArCrypt.Blazor.Services.Abstractions/bin/Debug/net8.0

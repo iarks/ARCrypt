@@ -1,0 +1,79 @@
+﻿@page "/decrypt"
+@inject ArCrypt.Blazor.Services.Abstractions.ICryptoService _cryptoService
+@using System
+@using System.Text
+@using System.ComponentModel.DataAnnotations
+@using ArCrypt.Blazor.Model
+
+<h4>Encrypt</h4>
+
+<EditForm Model="@_encryptForm" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3 form-floating">
+        <textarea class="form-control" style="height:100px; min-height:100px"
+                  placeholder="Ciphertext" id="ciphertext" @bind="@_encryptForm.Ciphertext">
+        </textarea>
+        <label for="ciphertext">Ciphertext</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input class="form-control" placeholder="Password" id="password" type="password" @bind="@_encryptForm.Password"></input>
+        <label for="password">Password</label>
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+        <button type="reset" class="btn btn-secondary w-100 mt-2" @onclick="ResetForm">Reset</button>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <textarea class="form-control" style="height:100px; min-height:100px" placeholder="Plaintext" id="plaintext" @bind="@_encryptForm.Plaintext">
+        </textarea>
+        <label for="plaintext">Plaintext</label>
+    </div>
+
+</EditForm>
+
+@code {
+
+    private EncryptionForm _encryptForm = new();
+    private ValidationContext _validationContext = null!;
+    private List<ValidationResult> _validationResult = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _cryptoService.Initialise();
+        _validationContext = new ValidationContext(_encryptForm);
+        _validationResult = [];
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (Validator.TryValidateObject(_encryptForm, _validationContext, _validationResult, true))
+        {
+            Console.WriteLine("Encryption successful!");
+        }
+        else
+        {
+            foreach (var result in _validationResult)
+            {
+                Console.WriteLine(result.ErrorMessage);
+            }
+        }
+
+        var ciphertextBytes = Convert.FromBase64String(_encryptForm.Ciphertext);
+        var plaintextBytes = await _cryptoService.Decrypt(ciphertextBytes, _encryptForm.Password, null);
+        var plainText = Encoding.UTF8.GetString(plaintextBytes);
+        _encryptForm.Plaintext = plainText;
+    }
+
+    private void ResetForm()
+    {
+        _encryptForm.Reset();
+        _validationResult.Clear();
+        StateHasChanged();
+    }
+
+    
+}
